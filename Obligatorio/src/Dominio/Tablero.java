@@ -6,7 +6,7 @@ package Dominio;
 
 /**
  *
- * @author Lcuna
+ * @author Lcuna y lucas nohacenada gonzalez
  */
 public class Tablero {
     private int filas;
