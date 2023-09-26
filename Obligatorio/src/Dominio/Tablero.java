@@ -4,6 +4,8 @@
  */
 package Dominio;
 
+import java.util.Scanner;
+
 /**
  *
  * @author Lcuna y lucas nohacenada gonzalez
@@ -145,6 +147,46 @@ public class Tablero {
     }
     
     
+    
+    public String primerMatriz(Scanner input){
+     // String [][] datos= 
+        String linea = input.nextLine();
+        return linea;
+        
+    }
+    public String[][] leerMatriz(Scanner input, String linea){
+           
+        String[] posString = linea.split(" ");
+
+        int filas= Integer.parseInt(posString[0]);
+        int columnas= Integer.parseInt(posString[1]);
+        
+          String [][] matriz = new String [filas][columnas];
+        
+          for(int i=0; i<=filas; i++){
+
+                  String coordStrings = input.nextLine();
+                  String[] coord = coordStrings.split(" ");
+                  
+                  for(int j=0; j<coord.length; j++){
+                      if(coord[j]=="|"){
+                          matriz[i][j]="|";
+                      }
+                      if(coord[j]=="\\"){
+                          matriz[i][j]="\\";
+                      }
+                      if(coord[j]=="/"){
+                          matriz[i][j]="/";
+                      }
+                      if(coord[j]=="-"){
+                          matriz[i][j]="-";
+                      }
+                  }
+              }
+          
+          
+          return matriz;
+    }
      
     
 }
