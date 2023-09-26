@@ -8,8 +8,7 @@ import Dominio.Tablero;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 /**
  *
@@ -36,22 +35,20 @@ public class Principal {
         String decision = tec.next();
         
         if(decision.equals("a")){
+            Scanner input = null;
             try { 
-                Scanner input = new Scanner(new File(".\\Test\\datos.txt"));
-                Tablero aux = new Tablero();
-                int[] datos= aux.primerMatriz(input);
-                
-                Tablero tabArchivo=new Tablero(3, datos[0], datos[1]);
-                System.out.println(datos[0]);
-                System.out.println(datos[1]);
-                
-               tabArchivo.armarTableroArchivo(input);
-                
+                input = new Scanner(new File(".\\Test\\datos.txt"));
                 
             } catch (FileNotFoundException ex) {
                 System.out.println("No se encontro el archivo");
             }
+            Tablero aux = new Tablero();
+            int[] datos= aux.primerMatriz(input);
 
+            Tablero tabArchivo=new Tablero(3, datos[0], datos[1]);
+
+
+            tabArchivo.armarTableroArchivo(input);
        
        
        

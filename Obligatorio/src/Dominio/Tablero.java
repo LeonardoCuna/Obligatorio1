@@ -16,6 +16,7 @@ public class Tablero {
     private int nivel;
     
     
+    
     public Tablero(){
         this.filas=5;
         this.columnas=6;
@@ -181,6 +182,10 @@ public class Tablero {
      
     
     public void armarTableroArchivo(Scanner input){
+        String rojo="\033[31m";
+        String azul="\033[34m"; 
+        String reset="\u001B[0m";
+        
         
         String[][] tablero=this.armarPlantilla();
         
@@ -190,38 +195,25 @@ public class Tablero {
             int col=0;
             
             for(int j=4; j<tablero[i].length; j+=4){
+                String color;
+                if(datos[fil][col].charAt(1)=='R'){
+                   color=rojo;
+                }else{
+                   color=azul;
+                }
                 
-                if(datos[fil][col].equals("|R")){
-                   tablero[i][j]="|";
-                   
-                }
-                if(datos[fil][col].equals("|A")){
-                   tablero[i][j]="|";
-                   
-                }
-                if(datos[fil][col].equals("-R")){
-                   tablero[i][j]="-";
-                   
-                }
-                if(datos[fil][col].equals("-A")){
-                   tablero[i][j]="-";
-                   
-                }
-                if(datos[fil][col].equals("/R")){
-                   tablero[i][j]="/";
-                   
-                }
-                if(datos[fil][col].equals("/A")){
-                   tablero[i][j]="/";
-                   
-                }
-                if(datos[fil][col].equals("\\R")){
-                   tablero[i][j]="\\";
-                   
-                }
-                if(datos[fil][col].equals("\\A")){
-                   tablero[i][j]="\\";
-                   
+                if(datos[fil][col].charAt(0)=='|'){
+                    tablero[i][j]=color+"|"+reset;
+                }else{
+                    if(datos[fil][col].charAt(0)=='-'){
+                       tablero[i][j]=color+"-"+reset; 
+                    }else{
+                       if(datos[fil][col].charAt(0)=='/'){
+                          tablero[i][j]=color+"/"+reset; 
+                       }else{
+                          tablero[i][j]=color+"\\"+reset; 
+                       }
+                    }
                 }
                 
                 col++;
