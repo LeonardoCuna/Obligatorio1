@@ -38,17 +38,18 @@ public class Principal {
         if(decision.equals("a")){
             try { 
                 Scanner input = new Scanner(new File(".\\Test\\datos.txt"));
-                Tablero tabArchivo = new Tablero();
-       String linea = tabArchivo.primerMatriz(input);
-       String [][] matriz = tabArchivo.leerMatriz(input, linea);
-       for(int i=0; i<=matriz.length; i++){
-           for(int j=0;j<=matriz[0].length; j++){
-               System.out.println(matriz[i][j]);
-           }
-           
-       }
+                Tablero aux = new Tablero();
+                int[] datos= aux.primerMatriz(input);
+                
+                Tablero tabArchivo=new Tablero(3, datos[0], datos[1]);
+                System.out.println(datos[0]);
+                System.out.println(datos[1]);
+                
+               tabArchivo.armarTableroArchivo(input);
+                
+                
             } catch (FileNotFoundException ex) {
-                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println("No se encontro el archivo");
             }
 
        
@@ -61,13 +62,13 @@ public class Principal {
         if(decision.equals("b")){
             
             Tablero predef= new Tablero();
-            predef.MostrarTablero();
+            predef.armarPlantilla();
             
             Tablero otro= new Tablero(4, 3, 5);
-            otro.MostrarTablero();
+            otro.armarPlantilla();
             
             Tablero otrotab= new Tablero(4, 8, 10);
-            otrotab.MostrarTablero();
+            otrotab.armarPlantilla();
          }
         if(decision.equals("c")){
         

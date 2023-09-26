@@ -27,6 +27,8 @@ public class Tablero {
         this.filas=filas;
         this.columnas=columnas;
     }
+    
+    
 
     public int getFilas() {
         return filas;
@@ -72,7 +74,7 @@ public class Tablero {
 
     
     
-    public void MostrarTablero(){
+    public String[][] armarPlantilla(){
         String[][] tablero=new String[this.altoTablero()][this.largoTablero()];
         tablero[0][0]=" ";
         
@@ -128,7 +130,7 @@ public class Tablero {
         
 
         
-        for (int i = 0; i < tablero.length; i++) {
+       /* for (int i = 0; i < tablero.length; i++) {
             for (int j = 0; j < tablero[i].length; j++) {
                 if(tablero[i][j]==null){
                     //System.out.printf("%1s ", "");
@@ -141,52 +143,106 @@ public class Tablero {
             }
             System.out.println(); // Saltar a una nueva línea después de cada fila
         }
-    
-        
+    */
+        return tablero;
         
     }
     
     
     
-    public String primerMatriz(Scanner input){
-     // String [][] datos= 
+    public int[] primerMatriz(Scanner input){
         String linea = input.nextLine();
-        return linea;
         
-    }
-    public String[][] leerMatriz(Scanner input, String linea){
-           
         String[] posString = linea.split(" ");
-
-        int filas= Integer.parseInt(posString[0]);
-        int columnas= Integer.parseInt(posString[1]);
-        
-          String [][] matriz = new String [filas][columnas];
-        
-          for(int i=0; i<=filas; i++){
-
-                  String coordStrings = input.nextLine();
-                  String[] coord = coordStrings.split(" ");
-                  
-                  for(int j=0; j<coord.length; j++){
-                      if(coord[j]=="|"){
-                          matriz[i][j]="|";
-                      }
-                      if(coord[j]=="\\"){
-                          matriz[i][j]="\\";
-                      }
-                      if(coord[j]=="/"){
-                          matriz[i][j]="/";
-                      }
-                      if(coord[j]=="-"){
-                          matriz[i][j]="-";
-                      }
-                  }
-              }
+        int[] dimensiones=new int[2];
+        dimensiones[0]=Integer.parseInt(posString[0]);
+        dimensiones[1]=Integer.parseInt(posString[1]);
+        return dimensiones;
+    }
+    
+    
+    public String[][] leerMatriz(Scanner input){
           
-          
+        int filas= this.getFilas();
+        int columnas=this.getColumnas();
+        
+        String [][] matriz = new String [filas][columnas];
+        
+        
+        for(int i=0; i<matriz.length; i++){
+            String[] linea=input.nextLine().split(" ");
+            for(int j=0; j<linea.length; j++){
+                matriz[i][j]=linea[j];
+            }
+        }
+     
           return matriz;
     }
      
+    
+    public void armarTableroArchivo(Scanner input){
+        
+        String[][] tablero=this.armarPlantilla();
+        
+        String[][] datos= this.leerMatriz(input);
+        int fil=0;
+        for(int i=2; i<tablero.length; i+=2){
+            int col=0;
+            
+            for(int j=4; j<tablero[i].length; j+=4){
+                
+                if(datos[fil][col].equals("|R")){
+                   tablero[i][j]="|";
+                   
+                }
+                if(datos[fil][col].equals("|A")){
+                   tablero[i][j]="|";
+                   
+                }
+                if(datos[fil][col].equals("-R")){
+                   tablero[i][j]="-";
+                   
+                }
+                if(datos[fil][col].equals("-A")){
+                   tablero[i][j]="-";
+                   
+                }
+                if(datos[fil][col].equals("/R")){
+                   tablero[i][j]="/";
+                   
+                }
+                if(datos[fil][col].equals("/A")){
+                   tablero[i][j]="/";
+                   
+                }
+                if(datos[fil][col].equals("\\R")){
+                   tablero[i][j]="\\";
+                   
+                }
+                if(datos[fil][col].equals("\\A")){
+                   tablero[i][j]="\\";
+                   
+                }
+                
+                col++;
+                    
+            }
+            fil++;
+        }
+        
+        for(int i = 0; i < tablero.length; i++) {
+            for (int j = 0; j < tablero[i].length; j++) {
+                if(tablero[i][j]==null){
+                    //System.out.printf("%1s ", "");
+                    System.out.print(" ");
+                }else{
+                    //System.out.printf("%1s ", tablero[i][j]);
+                    System.out.print(tablero[i][j]);
+                }
+                
+            }
+            System.out.println(); // Saltar a una nueva línea después de cada fila
+        }
+    }
     
 }
