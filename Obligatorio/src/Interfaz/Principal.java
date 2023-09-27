@@ -46,12 +46,25 @@ public class Principal {
             int[] datos= aux.primerMatriz(input);
 
             Tablero tabArchivo=new Tablero(3, datos[0], datos[1]);
-
-
             tabArchivo.armarTableroArchivo(input);
+            tabArchivo.mostrarTablero();
        
+            tabArchivo.cambiarColumna(0, 2);
        
-       
+            tabArchivo.mostrarTablero();
+            
+            tabArchivo.cambiarColumna(0, 5);
+            
+            tabArchivo.mostrarTablero();
+
+            /* String rojo="\033[31m";
+            String azul="\033[34m"; 
+            
+            String linearoja=rojo+"-";
+            if(linearoja.equals(rojo+"-")){
+                System.out.println("si");
+            }
+            */
                
         }
        // System.out.println(System.getProperty("user.dir"));

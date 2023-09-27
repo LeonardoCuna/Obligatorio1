@@ -14,8 +14,11 @@ public class Tablero {
     private int filas;
     private int columnas;
     private int nivel;
+    private String[][] tablero;
     
-    
+    String rojo="\033[31m";
+    String azul="\033[34m"; 
+    String reset="\u001B[0m";
     
     public Tablero(){
         this.filas=5;
@@ -182,9 +185,7 @@ public class Tablero {
      
     
     public void armarTableroArchivo(Scanner input){
-        String rojo="\033[31m";
-        String azul="\033[34m"; 
-        String reset="\u001B[0m";
+        
         
         
         String[][] tablero=this.armarPlantilla();
@@ -222,19 +223,47 @@ public class Tablero {
             fil++;
         }
         
-        for(int i = 0; i < tablero.length; i++) {
-            for (int j = 0; j < tablero[i].length; j++) {
-                if(tablero[i][j]==null){
+       
+       
+       this.tablero=tablero;
+    }
+    
+    
+    
+    
+    public void aplicarJugada(int fila, int columna){
+        
+    }
+    
+    
+    public void cambiarColumna(int fila, int columna){
+        
+        
+        for(int i=2; i<this.tablero.length; i+=2){
+            String comparar=this.tablero[i][columna*4];
+               if(comparar.contains(rojo)){
+                   this.tablero[i][columna*4]=comparar.replace(rojo, azul);
+               }
+               if(comparar.contains(azul)){
+                   this.tablero[i][columna*4]=comparar.replace(azul, rojo);
+               }
+        }
+    }
+            
+    public void mostrarTablero(){
+        for(int i = 0; i < this.tablero.length; i++) {
+            for (int j = 0; j < this.tablero[i].length; j++) {
+                if(this.tablero[i][j]==null){
                     //System.out.printf("%1s ", "");
                     System.out.print(" ");
                 }else{
                     //System.out.printf("%1s ", tablero[i][j]);
-                    System.out.print(tablero[i][j]);
+                    System.out.print(this.tablero[i][j]);
                 }
                 
             }
             System.out.println(); // Saltar a una nueva línea después de cada fila
-        }
+        } 
     }
     
-}
+    }
