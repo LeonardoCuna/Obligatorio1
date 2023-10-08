@@ -4,13 +4,14 @@
  */
 package Dominio;
 
+import java.util.Random;
 import java.util.Scanner;
 
 /**
  *
  * @author Lcuna y lucas nohacenada gonzalez
  */
-public class Tablero {
+public class Tablero implements Cloneable{
     private int filas;
     private int columnas;
     private int nivel;
@@ -68,11 +69,6 @@ public class Tablero {
         return cantidadLargo;
     }
     
-   
-
-
-
-
 
 
 
@@ -153,7 +149,84 @@ public class Tablero {
     }
     
     
+   
+    public static String[][] generarMatrizRandom(int n, int m) {
+        String[][] matriz = new String[n][m];
+        Random rand = new Random();
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                int randomIndex = rand.nextInt(4);
+                String[] caracteres = {"-R", "|R", "/R", "\\R","-A", "|A", "/A", "\\A"};
+                matriz[i][j] = caracteres[randomIndex];
+            }
+        }
+
+        return matriz;
+    }
     
+     public String[] desordenarMatriz(int nivel,int filas,int columnas){
+         String[][] tablero=this.armarPlantilla();
+         Random rand = new Random();
+         String[]movimientos = new String[nivel];
+         
+         for(int i=0; i<nivel; i++){
+             int filaRandom = rand.nextInt(filas)+1;
+             int columnaRandom = rand.nextInt(columnas)+1;
+             aplicarJugada(filaRandom, columnaRandom);
+             
+             movimientos[i]=filaRandom+","+columnaRandom;
+         }
+
+         return movimientos;
+     }
+    
+     public void armarTableroRandom(String[][] matriz){
+        
+        String[][] tablero=this.armarPlantilla();
+
+         
+        int fil=0;
+        for(int i=2; i<tablero.length; i+=2){
+            int col=0;
+            
+            for(int j=4; j<tablero[i].length; j+=4){
+                String color;
+                if(matriz[fil][col].charAt(1)=='R'){
+                   color=rojo;
+                }else{
+                   color=azul;
+                }
+                
+                if(matriz[fil][col].charAt(0)=='|'){
+                    tablero[i][j]=color+"|"+reset;
+                }else{
+                    if(matriz[fil][col].charAt(0)=='-'){
+                       tablero[i][j]=color+"-"+reset; 
+                    }else{
+                       if(matriz[fil][col].charAt(0)=='/'){
+                          tablero[i][j]=color+"/"+reset; 
+                       }else{
+                          tablero[i][j]=color+"\\"+reset; 
+                       }
+                    }
+                }
+                
+                col++;
+                    
+            }
+            fil++;
+        }
+        
+       
+       
+       this.tablero=tablero;
+    }
+    
+    
+    
+    
+  
     public int[] primerMatriz(Scanner input){
         String linea = input.nextLine();
         
@@ -232,12 +305,36 @@ public class Tablero {
     
     
     public void aplicarJugada(int fila, int columna){
+        String[][] tablero=this.tablero;
+        if((tablero[fila][columna])=="-"){
+            cambiarFila(fila,columna);
+        }
+        if((tablero[fila][columna])=="|"){
+            cambiarColumna(fila,columna);
+        }
+        if((tablero[fila][columna])=="\\"){
+            cambiarContraDiagonal(fila,columna);
+        }
+        
         
     }
     
+  
     
-    public void cambiarColumna(int fila, int columna){
-        
+    public void cambiarContraDiagonal(int fila, int columna){
+        for(int i=0; i<this.tablero.length; i++){
+        String comparar=this.tablero[i][i*4];
+            if(comparar.contains(rojo)){
+                   this.tablero[i][i]=comparar.replace(rojo, azul);
+               }
+               if(comparar.contains(azul)){
+                   this.tablero[i][i]=comparar.replace(azul, rojo);
+               }
+        }
+
+    }
+    
+      public void cambiarFila(int fila, int columna){
         
         for(int i=2; i<this.tablero.length; i+=2){
             String comparar=this.tablero[i][columna*4];
@@ -249,6 +346,19 @@ public class Tablero {
                }
         }
     }
+    
+    public void cambiarColumna(int fila, int columna){
+    for(int j=4; j<this.tablero[0].length; j+=4){
+        String comparar = this.tablero[fila*2][j];
+        if(comparar.contains(rojo)){
+            this.tablero[fila*2][j] = comparar.replace(rojo, azul);
+        }
+        if(comparar.contains(azul)){
+            this.tablero[fila*2][j] = comparar.replace(azul, rojo);
+        }
+    }
+}
+    
             
     public void mostrarTablero(){
         for(int i = 0; i < this.tablero.length; i++) {
@@ -265,5 +375,24 @@ public class Tablero {
             System.out.println(); // Saltar a una nueva línea después de cada fila
         } 
     }
+    
+    @Override
+    public Tablero clone() {
+    try {
+        Tablero clon = (Tablero) super.clone();
+
+        // Clona el tablero
+        clon.tablero = new String[this.tablero.length][this.tablero[0].length];
+        for (int i = 0; i < this.tablero.length; i++) {
+            for (int j = 0; j < this.tablero[0].length; j++) {
+                clon.tablero[i][j] = this.tablero[i][j];
+            }
+        }
+        
+        return clon;
+    } catch (CloneNotSupportedException e) {
+        throw new AssertionError(); 
+    }
+}
     
     }

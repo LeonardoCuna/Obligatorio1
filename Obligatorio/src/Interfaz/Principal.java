@@ -53,7 +53,6 @@ public class Principal {
        
             tabArchivo.mostrarTablero();
             
-            tabArchivo.cambiarColumna(0, 5);
             
             tabArchivo.mostrarTablero();
 
@@ -81,7 +80,32 @@ public class Principal {
             otrotab.armarPlantilla();
          }
         if(decision.equals("c")){
-        
+            System.out.println("");
+            System.out.println("Ingrese Nivel de tablero");
+            int nivel = tec.nextInt();
+            System.out.println("Ingrese Filas de tablero");
+            int filas = tec.nextInt();
+            System.out.println("Ingrese Columnas de tablero");
+            int columnas = tec.nextInt();
+            
+            Tablero azarFinalizado= new Tablero(nivel,filas,columnas); 
+            
+            
+            String[][] matriz =azarFinalizado.generarMatrizRandom(filas,columnas);
+            azarFinalizado.armarTableroRandom(matriz);
+             azarFinalizado.mostrarTablero();
+            //hasta aca tablero queda hecho en un solo color
+            
+            
+            Tablero desordenado = azarFinalizado.clone();
+              
+            String[] movimientos =desordenado.desordenarMatriz(nivel,filas,columnas);
+            
+             desordenado.mostrarTablero();
+             for(int i=0; i<movimientos.length; i++){
+                 System.out.println(movimientos[i]);
+             }
+           
          }
     }
     
