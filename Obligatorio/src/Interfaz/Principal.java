@@ -49,10 +49,7 @@ public class Principal {
             tabArchivo.armarTableroArchivo(input);
             tabArchivo.mostrarTablero();
        
-            tabArchivo.cambiarColumna(0, 2);
-       
-            tabArchivo.mostrarTablero();
-            
+            tabArchivo.cambiarDiagonal(2, 2);
             
             tabArchivo.mostrarTablero();
 
@@ -91,17 +88,17 @@ public class Principal {
             Tablero azarFinalizado= new Tablero(nivel,filas,columnas); 
             
             
-            String[][] matriz =azarFinalizado.generarMatrizRandom(filas,columnas);
+            String[][] matriz = azarFinalizado.generarMatrizRandom(filas,columnas);
             azarFinalizado.armarTableroRandom(matriz);
              azarFinalizado.mostrarTablero();
             //hasta aca tablero queda hecho en un solo color
             
             
-            Tablero desordenado = azarFinalizado.clone();
+            //Tablero desordenado = azarFinalizado.clone();
               
-            String[] movimientos =desordenado.desordenarMatriz(nivel,filas,columnas);
+            String[] movimientos =azarFinalizado.desordenarMatriz(nivel,filas,columnas);
             
-             desordenado.mostrarTablero();
+            // desordenado.mostrarTablero();
              for(int i=0; i<movimientos.length; i++){
                  System.out.println(movimientos[i]);
              }
