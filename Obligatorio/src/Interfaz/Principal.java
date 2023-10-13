@@ -49,10 +49,7 @@ public class Principal {
             tabArchivo.armarTableroArchivo(input);
             tabArchivo.mostrarTablero();
        
-            tabArchivo.cambiarColumna(0, 2);
-       
-            tabArchivo.mostrarTablero();
-            
+            tabArchivo.cambiarDiagonal(2, 2);
             
             tabArchivo.mostrarTablero();
 

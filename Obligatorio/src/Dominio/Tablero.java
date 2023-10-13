@@ -311,12 +311,14 @@ public class Tablero implements Cloneable{
         
         if((this.tablero[fila*2][columna*4]).contains("-")){
             this.cambiarFila(fila,columna);
-            System.out.println("hola");
         }
         
         if((this.tablero[fila*2][columna*4]).contains("|")){
             this.cambiarColumna(fila,columna);
-            System.out.println("hola2");
+        }
+        
+        if((this.tablero[fila*2][columna*4]).contains("/")){
+            this.cambiarDiagonal(fila,columna);
         }
          /* if((tablero[fila][columna])=="\\"){
             cambiarContraDiagonal(fila,columna);
@@ -353,17 +355,43 @@ public class Tablero implements Cloneable{
         }
     }
       
-      public void cambiarDiagonal(int fila, int columna){
-        
-        for(int i=2; i<this.tablero.length; i+=2){
-            String comparar=this.tablero[i][columna*4];
-               if(comparar.contains(rojo)){
-                   this.tablero[i][columna*4]=comparar.replace(rojo, azul);
+     public void cambiarDiagonal(int fila, int columna){
+          int filaTab=fila*2;
+          int colTab=columna*4;
+          
+          //para arriba
+          for(int i=filaTab; i<this.tablero.length && i>=0 && colTab<this.tablero[0].length; i-=2){
+             
+                 String comparar=this.tablero[i][colTab];
+              if(comparar.contains(rojo)){
+                   this.tablero[i][colTab]=comparar.replace(rojo, azul);
                }
                if(comparar.contains(azul)){
-                   this.tablero[i][columna*4]=comparar.replace(azul, rojo);
+                   this.tablero[i][colTab]=comparar.replace(azul, rojo);
                }
-        }
+               
+               colTab+=4;
+             
+          }
+          
+          filaTab=fila*2;
+          colTab=columna*4;
+        //para abajo
+          for(int i=filaTab+2; i<this.tablero.length && colTab>=4; i+=2){
+                colTab-=4;
+                 String comparar=this.tablero[i][colTab];
+              if(comparar.contains(rojo)){
+                   this.tablero[i][colTab]=comparar.replace(rojo, azul);
+               }
+               if(comparar.contains(azul)){
+                   this.tablero[i][colTab]=comparar.replace(azul, rojo);
+               }
+               
+               
+             
+          }
+        
+          
     }
     
     public void cambiarFila(int fila, int columna){
