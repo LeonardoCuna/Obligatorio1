@@ -16,7 +16,27 @@ import java.util.Scanner;
  * @author lucas
  */
 public class Principal {
-  
+
+    
+    public static int[] movimiento(){
+        
+        //falta movimiento
+                 Scanner tec= new Scanner(System.in);         
+                 System.out.println("--Jugada--");
+
+                 System.out.println("Ingrese movimiento");
+                 String movimiento = tec.next();
+   
+                 int[] retorno = new int[2];
+                 retorno[0] = (int)(movimiento.charAt(0));
+                 retorno[1] = (int)(movimiento.charAt(2));
+                         
+                         
+                 System.out.println( retorno[0]);
+                 System.out.println( retorno[1]);
+                 
+                 return retorno;
+    }
 
 
     public static String solicitarDatosInicio(){
@@ -129,20 +149,33 @@ public class Principal {
             azarFinalizado.armarTableroRandom(matriz);
              azarFinalizado.mostrarTablero();
             //hasta aca tablero queda hecho en un solo color
-            
-            
-            //Tablero desordenado = azarFinalizado.clone();
-              
+             
             String[] movimientos =azarFinalizado.desordenarMatriz(nivel,filas,columnas);
+            
+            Tablero aOrdenar = azarFinalizado.clone();
             
             // desordenado.mostrarTablero();
              for(int i=0; i<movimientos.length; i++){
                  System.out.println(movimientos[i]);
              }
+   
+             int x=0;
+             while(x<2){
+                int[] paso = movimiento();
+                
+                aOrdenar.aplicarJugada(paso[0],paso[1]);
+                
+                aOrdenar.mostrarTablero();
+                x++;
+             }
+             
+             
+             
                 break;
                 
-            default: System.out.println("Ingresaste una opción incorrecta, recuerda que debe ser a, b o c.");
-            solicitarDatosInicio();
+            default: 
+            System.out.println("Ingresaste una opción incorrecta, recuerda que debe ser a, b o c.");
+            inicio();
                     break;
                   
         }       

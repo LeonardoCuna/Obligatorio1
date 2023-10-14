@@ -226,9 +226,7 @@ public class Tablero implements Cloneable{
        this.tablero=tablero;
     }
     
-    
-    
-    
+
   
     public int[] primerMatriz(Scanner input){
         String linea = input.nextLine();
