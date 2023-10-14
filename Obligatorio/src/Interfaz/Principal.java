@@ -7,6 +7,7 @@ package Interfaz;
 import Dominio.Tablero;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 
@@ -15,14 +16,13 @@ import java.util.Scanner;
  * @author lucas
  */
 public class Principal {
+  
 
-    
-    public static void inicio(){
-        Scanner tec= new Scanner(System.in);
-        
-        
-        
-        System.out.println("Bienvenido a Soliflips");
+
+    public static String solicitarDatosInicio(){
+                Scanner tec= new Scanner(System.in);
+       
+            System.out.println("Bienvenido a Soliflips");
         System.out.println("");
         System.out.println("a) Tomar datos del archivo 'datos.txt' ");
         System.out.println("b) Usar el tablero predefinido");
@@ -31,11 +31,49 @@ public class Principal {
                            tablero a generar debe ser resoluble en esa cantidad de pasos indicada por el nivel.""");
         System.out.println("");       
         System.out.println("Elige tu opción");
-                
         String decision = tec.next();
+        return decision;
+        }
+      
+    public static int validarEntero(String mensaje) {
+        Scanner tec = new Scanner(System.in);
+        int numero = 0;
+        boolean entradaValida = false;
+
+        while (!entradaValida) {
+            try {
+                System.out.println(mensaje);
+                numero = tec.nextInt();
+                entradaValida = true; //entrada es válida.
+            } catch (InputMismatchException e) {
+                System.out.println("Error: Debes ingresar un número entero.");
+                tec.next(); // Limpir el buffer
+            }
+        } 
+        return numero;
+    }
+    public static int[] ingresarDimensionesTablero() {
+        Scanner tec = new Scanner(System.in);
         
-        if(decision.equals("a")){
-            Scanner input = null;
+        System.out.println("");
+        int nivel = validarEntero("Ingresar nivel del tablero");
+    
+        int filas =  validarEntero("Ingresar filas del tablero");
+        
+        int columnas =  validarEntero("Ingresar columnas del tablero");
+        
+        int[] dimensiones = {nivel, filas, columnas};
+        return dimensiones;
+    }
+    
+    
+    
+    public static void inicio(){   
+        String decision=solicitarDatosInicio();
+        
+        switch(decision){
+            case "a":
+                Scanner input = null;
             try { 
                 input = new Scanner(new File(".\\Test\\datos.txt"));
                 
@@ -61,12 +99,12 @@ public class Principal {
                 System.out.println("si");
             }
             */
-               
-        }
-       // System.out.println(System.getProperty("user.dir"));
-           
-        if(decision.equals("b")){
-            
+                break;
+                
+              
+                
+            case "b":
+                // System.out.println(System.getProperty("user.dir")); 
             Tablero predef= new Tablero();
             predef.armarPlantilla();
             
@@ -75,15 +113,14 @@ public class Principal {
             
             Tablero otrotab= new Tablero(4, 8, 10);
             otrotab.armarPlantilla();
-         }
-        if(decision.equals("c")){
-            System.out.println("");
-            System.out.println("Ingrese Nivel de tablero");
-            int nivel = tec.nextInt();
-            System.out.println("Ingrese Filas de tablero");
-            int filas = tec.nextInt();
-            System.out.println("Ingrese Columnas de tablero");
-            int columnas = tec.nextInt();
+                break;
+                
+                
+            case "c":
+               int[] dimensiones=ingresarDimensionesTablero();
+               int nivel=dimensiones[0];
+               int filas = dimensiones[1];
+               int columnas = dimensiones[2];
             
             Tablero azarFinalizado= new Tablero(nivel,filas,columnas); 
             
@@ -102,8 +139,13 @@ public class Principal {
              for(int i=0; i<movimientos.length; i++){
                  System.out.println(movimientos[i]);
              }
-           
-         }
+                break;
+                
+            default: System.out.println("Ingresaste una opción incorrecta, recuerda que debe ser a, b o c.");
+            solicitarDatosInicio();
+                    break;
+                  
+        }       
     }
     
     
