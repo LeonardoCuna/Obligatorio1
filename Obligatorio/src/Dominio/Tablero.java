@@ -33,7 +33,9 @@ public class Tablero implements Cloneable{
         this.columnas=columnas;
     }
     
-    
+    public String[][] getTablero() {
+        return tablero;
+    }
 
     public int getFilas() {
         return filas;
@@ -69,10 +71,9 @@ public class Tablero implements Cloneable{
         return cantidadLargo;
     }
     
+  
 
 
-
-    
     
     public String[][] armarPlantilla(){
         String[][] tablero=new String[this.altoTablero()][this.largoTablero()];
@@ -153,7 +154,7 @@ public class Tablero implements Cloneable{
     public static String[][] generarMatrizRandom(int n, int m) {
         String[][] matriz = new String[n][m];
         Random rand = new Random();
-
+        
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
                 int randomIndex = rand.nextInt(4);
@@ -166,16 +167,15 @@ public class Tablero implements Cloneable{
     }
     
      public String[] desordenarMatriz(int nivel,int filas,int columnas){
-         String[][] tablero=this.armarPlantilla();
          Random rand = new Random();
          String[]movimientos = new String[nivel];
          
          for(int i=0; i<nivel; i++){
              int filaRandom = rand.nextInt(filas)+1;
              int columnaRandom = rand.nextInt(columnas)+1;
-             //System.out.println("Fila:" + filaRandom+ " Columna:" +columnaRandom);
+ 
              this.aplicarJugada(filaRandom, columnaRandom);
-             //this.mostrarTablero();
+
              
            
              movimientos[i]=filaRandom+","+columnaRandom;
@@ -305,7 +305,7 @@ public class Tablero implements Cloneable{
     
     
     
-    public void aplicarJugada(int fila, int columna){
+   public void aplicarJugada(int fila, int columna){
         
         if((this.tablero[fila*2][columna*4]).contains("-")){
             this.cambiarFila(fila,columna);
@@ -318,28 +318,12 @@ public class Tablero implements Cloneable{
         if((this.tablero[fila*2][columna*4]).contains("/")){
             this.cambiarDiagonal(fila,columna);
         }
-         /* if((tablero[fila][columna])=="\\"){
-            cambiarContraDiagonal(fila,columna);
+       /*  if((this.tablero[fila][columna])=="\\"){
+            cambiarColorContraDiagonal(fila,columna);
         }*/
-        this.mostrarTablero();
-        System.out.println(this.tablero[fila*2][columna*4]);
     }
     
   
-    
-    /* public void cambiarContraDiagonal(int fila, int columna){
-        for(int i=0; i<this.tablero.length; i++){
-        String comparar=this.tablero[i][i*4];
-            if(comparar.contains(rojo)){
-                   this.tablero[i][i]=comparar.replace(rojo, azul);
-               }
-               if(comparar.contains(azul)){
-                   this.tablero[i][i]=comparar.replace(azul, rojo);
-               }
-        }
-
-    }*/
-    
       public void cambiarColumna(int fila, int columna){
         
         for(int i=2; i<this.tablero.length; i+=2){
@@ -409,10 +393,10 @@ public class Tablero implements Cloneable{
         for(int i = 0; i < this.tablero.length; i++) {
             for (int j = 0; j < this.tablero[i].length; j++) {
                 if(this.tablero[i][j]==null){
-                    //System.out.printf("%1s ", "");
+
                     System.out.print(" ");
                 }else{
-                    //System.out.printf("%1s ", tablero[i][j]);
+
                     System.out.print(this.tablero[i][j]);
                 }
                 
@@ -421,23 +405,50 @@ public class Tablero implements Cloneable{
         } 
     }
     
-    @Override
-    public Tablero clone() {
-    try {
-        Tablero clon = (Tablero) super.clone();
 
-        // Clona el tablero
-        clon.tablero = new String[this.tablero.length][this.tablero[0].length];
-        for (int i = 0; i < this.tablero.length; i++) {
-            for (int j = 0; j < this.tablero[0].length; j++) {
-                clon.tablero[i][j] = this.tablero[i][j];
+
+        public boolean sonIguales(Tablero otro) {
+        String[][] tablero1 = this.getTablero();
+        String[][] tablero2 = otro.getTablero();
+
+        if (tablero1.length != tablero2.length || tablero1[0].length != tablero2[0].length) {
+            return false;
+        }
+
+        for (int i = 2; i < tablero1.length; i+=2) {
+            for (int j = 4; j < tablero1[0].length; j+=4) {
+                
+                if(tablero1[i][j].contains(rojo) && (tablero2[i][j].contains(azul))){
+                    return false;
+                }
+                if(tablero1[i][j].contains(azul) && (tablero2[i][j].contains(rojo))){
+                    return false;
+                }
+                
+                if (!tablero1[i][j].equals(tablero2[i][j])) {
+                    return false;
+                }
+            
             }
         }
-        
-        return clon;
-    } catch (CloneNotSupportedException e) {
-        throw new AssertionError(); 
+        return true;
     }
+        
+        @Override
+   public Tablero clone() {
+    Tablero nuevoTablero = new Tablero();
+    nuevoTablero.filas = this.filas;
+    nuevoTablero.columnas = this.columnas;
+    nuevoTablero.nivel = this.nivel;
+
+   nuevoTablero.tablero = new String[(this.filas * 2) + 2][(this.columnas * 4) + 3];
+    for (int i = 0; i < this.filas * 2 + 2; i++) {
+        for (int j = 0; j < this.columnas * 4 + 3; j++) {
+            nuevoTablero.tablero[i][j] = this.tablero[i][j];
+        }
+    }
+
+    return nuevoTablero;
 }
     
     }

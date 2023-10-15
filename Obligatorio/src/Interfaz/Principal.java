@@ -17,6 +17,23 @@ import java.util.Scanner;
  */
 public class Principal {
 
+    public static void deseaJugar(){
+        Scanner tec= new Scanner(System.in); 
+        System.out.println("¿Deseas jugar de nuevo? S/N");
+        String decision = tec.nextLine();
+        
+        switch(decision.toUpperCase()){
+            case "S": inicio();
+                break;
+                
+            case "N": System.out.println("Gracias por jugar");
+            break;
+            
+            default: System.out.println("Usted ingreso una opción incorrecta");
+                System.out.println("");
+                break;
+        }
+    }
     
     public static int[] movimiento(){
         
@@ -25,15 +42,16 @@ public class Principal {
                  System.out.println("--Jugada--");
 
                  System.out.println("Ingrese movimiento");
-                 String movimiento = tec.next();
-   
+                 String movimiento = tec.nextLine();
+          
+                  String[] coordenadas = movimiento.split(" ");
+                  int x = Integer.parseInt(coordenadas[0]);
+                  int y = Integer.parseInt(coordenadas[1]);
+                 
                  int[] retorno = new int[2];
-                 retorno[0] = (int)(movimiento.charAt(0));
-                 retorno[1] = (int)(movimiento.charAt(2));
-                         
-                         
-                 System.out.println( retorno[0]);
-                 System.out.println( retorno[1]);
+                 retorno[0] = x;
+                 retorno[1] = y;
+
                  
                  return retorno;
     }
@@ -143,35 +161,54 @@ public class Principal {
                int columnas = dimensiones[2];
             
             Tablero azarFinalizado= new Tablero(nivel,filas,columnas); 
-            
-            
-            String[][] matriz = azarFinalizado.generarMatrizRandom(filas,columnas);
+             String[][] matriz = azarFinalizado.generarMatrizRandom(filas,columnas);
             azarFinalizado.armarTableroRandom(matriz);
-             azarFinalizado.mostrarTablero();
-            //hasta aca tablero queda hecho en un solo color
-             
-            String[] movimientos =azarFinalizado.desordenarMatriz(nivel,filas,columnas);
+            //arma un tablero de un solo color random
+            
             
             Tablero aOrdenar = azarFinalizado.clone();
             
-            // desordenado.mostrarTablero();
+
+              String[] movimientos =aOrdenar.desordenarMatriz(nivel,filas,columnas);
+         
+            
+            
+            int movimientosNecesitadosPorUser = 0;
+            
              for(int i=0; i<movimientos.length; i++){
                  System.out.println(movimientos[i]);
              }
-   
-             int x=0;
-             while(x<2){
-                int[] paso = movimiento();
-                
-                aOrdenar.aplicarJugada(paso[0],paso[1]);
-                
+ 
+                System.out.println("");
+                System.out.println("Tu tablero de "+nivel+ "nivel" + " con " +filas+ " filas y "+columnas+ "columnas es:");
                 aOrdenar.mostrarTablero();
-                x++;
-             }
              
-             
-             
+            while(!aOrdenar.sonIguales(azarFinalizado)){
+                
+               int[] movimientoRealizar= movimiento();
+               
+             aOrdenar.aplicarJugada(movimientoRealizar[0], movimientoRealizar[1]);  
+             movimientosNecesitadosPorUser++;
+                System.out.println("");
+                System.out.println("Realizaste el movimiento: "+movimientoRealizar[0]+","+movimientoRealizar[1]);
+                System.out.println("Tablero actual:");
+                
+               aOrdenar.mostrarTablero();
+            }
+            if(aOrdenar.sonIguales(azarFinalizado)){
+                System.out.println("");
+                System.out.println("Felicidades, ganaste, este es el tablero final");
+                System.out.println("");
+                aOrdenar.mostrarTablero();
+                System.out.println("Lo lograste en: "+ movimientosNecesitadosPorUser + " Movimientos");
+                deseaJugar();
+               
+            }
+
                 break;
+                
+                
+
                 
             default: 
             System.out.println("Ingresaste una opción incorrecta, recuerda que debe ser a, b o c.");
