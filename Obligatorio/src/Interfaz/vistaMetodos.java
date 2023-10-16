@@ -10,24 +10,41 @@ import java.util.Scanner;
 
 public class vistaMetodos {
     
+    public static void mostrarJugadas(Tablero x, Partida Juego) {
+        System.out.println("");
+        System.out.println("Estas fueron tus jugadas:");
+        System.out.println("");
+        int contadorJugada = 1;
+        for (Tablero jugada : Juego.getJugadas()) {
+            System.out.println("Jugada "+contadorJugada+":");
+                    jugada.mostrarTablero();
+                    contadorJugada++;
+                }
+    }
        
     public static int validarEntero(String mensaje) {
-        Scanner tec = new Scanner(System.in);
-        int numero = 0;
-        boolean entradaValida = false;
+    Scanner tec = new Scanner(System.in);
+    int numero = 0;
+    boolean entradaValida = false;
 
-        while (!entradaValida) {
-            try {
-                System.out.println(mensaje);
-                numero = tec.nextInt();
-                entradaValida = true; //entrada es válida.
-            } catch (InputMismatchException e) {
-                System.out.println("Error: Debes ingresar un número entero.");
-                tec.next(); // Limpir el buffer
+    while (!entradaValida) {
+        try {
+            System.out.println(mensaje);
+            String entrada = tec.nextLine();
+
+            if (entrada.equalsIgnoreCase("x") || entrada.equalsIgnoreCase("X")) {
+                return -1; 
             }
-        } 
-        return numero;
-    }
+
+            numero = Integer.parseInt(entrada);
+            entradaValida = true;
+
+        } catch (NumberFormatException e) {
+            System.out.println("Error: Debes ingresar un número entero.");
+        }
+    } 
+    return numero;
+}
     public static int[] ingresarDimensionesTablero() {
         Scanner tec = new Scanner(System.in);
         
@@ -42,56 +59,69 @@ public class vistaMetodos {
         return dimensiones;
     }
     
-     public static void ganaste(Tablero x,int movimientos){
+     public static void ganaste(Tablero x,int movimientos,Partida Juego){
             System.out.println("");
                 System.out.println("Felicidades, ganaste, este es el tablero final");
                 System.out.println("");
                 x.mostrarTablero();
                 System.out.println("Lo lograste en: "+ movimientos + " Movimientos");
-                deseaJugar();
+                mostrarJugadas(x,  Juego);
+                System.out.println("");
+               
         }
      
      public static void deseaJugar(){
         Scanner tec= new Scanner(System.in); 
         System.out.println("¿Deseas jugar de nuevo? S/N");
         String decision = tec.nextLine();
+
         
         switch(decision.toUpperCase()){
             case "S": inicio();
                 break;
                 
             case "N": System.out.println("Gracias por jugar");
+
             break;
             
             default: System.out.println("Usted ingreso una opción incorrecta");
                 System.out.println("");
-                break;
+            
         }
+
     }
  
      public static int[] movimiento(){
         
-        //falta movimiento
                  Scanner tec= new Scanner(System.in);         
                  System.out.println("--Jugada--");
 
-                 System.out.println("Ingrese movimiento");
-                 String movimiento = tec.nextLine();
+                 int fila=validarEntero("Ingrese fila");
                  
-                 if(movimiento=="X"){
-                     
+                 if(fila==-1){
+                     System.out.println("Juego terminado.");
+                    inicio();         
                  }
-          
-                  String[] coordenadas = movimiento.split(" ");
-                  int x = Integer.parseInt(coordenadas[0]);
-                  int y = Integer.parseInt(coordenadas[1]);
+                 
+                 int columna=validarEntero("Ingrese columna");
+                 
+                 if(fila==-1){
+                     System.out.println("Juego terminado.");
+                    inicio();           
+                 }
                  
                  int[] retorno = new int[2];
+
+
+                  int x = fila;
+                  int y = columna;
+                 
+                 
                  retorno[0] = x;
                  retorno[1] = y;
-
-                 
-                 return retorno;
+        
+               
+                 return retorno; 
     }
      
      public static String solicitarDatosInicio(){
@@ -128,6 +158,9 @@ public class vistaMetodos {
             Tablero tabArchivo=new Tablero(3, datos[0], datos[1]);
             tabArchivo.armarTableroArchivo(input);
             tabArchivo.mostrarTablero();
+            
+            
+            
       
 
             
@@ -137,19 +170,52 @@ public class vistaMetodos {
               
                 
             case "b":
-                // System.out.println(System.getProperty("user.dir")); 
-            Tablero predef= new Tablero();
-            predef.armarPlantilla();
+                input = null;
+            try { 
+                input = new Scanner(new File(".\\Test\\predefinido.txt"));
+                
+            } catch (FileNotFoundException ex) {
+                System.out.println("No se encontro el archivo");
+            }
+            Tablero predefinido = new Tablero();
+            int[] pre= predefinido.primerMatriz(input);
+
+            Tablero tableroPredefinido=new Tablero(3, pre[0], pre[1]);
+            tableroPredefinido.armarTableroArchivo(input);
             
-            Tablero otro= new Tablero(4, 3, 5);
-            otro.armarPlantilla();
+            Tablero predefinidoColor = tableroPredefinido.clone();
+            predefinidoColor.aplicarJugada(4, 4);
+            predefinidoColor.aplicarJugada(5, 6);
+            predefinidoColor.aplicarJugada(5, 4);            
             
-            Tablero otrotab= new Tablero(4, 8, 10);
-            otrotab.armarPlantilla();
+                System.out.println("-------------------------");
+                System.out.println("Tablero a resolver:");
+                tableroPredefinido.mostrarTablero();
+                
+             Partida Juego2 = new Partida();  
+             
+            while(!tableroPredefinido.sonIguales(predefinidoColor)){
+                
+               int[] movimientoRealizar= movimiento();
+               
+             
+               
+              tableroPredefinido.aplicarJugada(movimientoRealizar[0], movimientoRealizar[1]);  
+                Juego2.sumarMovimiento();
+                System.out.println("");
+                System.out.println("Realizaste el movimiento: "+movimientoRealizar[0]+","+movimientoRealizar[1]);
+                System.out.println("Tablero actual:");
+                
+               tableroPredefinido.mostrarTablero();
+               Tablero jugada=tableroPredefinido.clone();
+               Juego2.addJugadas(jugada);
+            }
             
+            if(tableroPredefinido.sonIguales(predefinidoColor)){
+                ganaste(tableroPredefinido,Juego2.getCantMovimientos(),Juego2);
+                 deseaJugar();
             
-            
-            
+            }
             
                 break;
                 
@@ -203,12 +269,10 @@ public class vistaMetodos {
             
             
             
-            if(aOrdenar.sonIguales(azarFinalizado)){
-                ganaste(aOrdenar,Juego.getCantMovimientos());
-                for (Tablero jugada : Juego.getJugadas()) {
-                    jugada.mostrarTablero();
-                }
-            
+            if(aOrdenar.sonIguales(azarFinalizado)){      
+                ganaste(aOrdenar,Juego.getCantMovimientos(),Juego);
+                deseaJugar();
+
             }
 
                 break;

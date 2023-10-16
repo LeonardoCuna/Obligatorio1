@@ -14,12 +14,21 @@ public class Partida {
     private ArrayList<Tablero> jugadas = new ArrayList();
     private int tiempo;
     private int cantMovimientos;
+    private ArrayList<String> movimientos = new ArrayList();
 
     
     public Partida(){
         this.cantMovimientos=0;
     }
     
+    
+    public ArrayList<String> getMovimientos() {
+        return movimientos;
+    }
+    
+    public void addMovimiento(String x) {
+       movimientos.add(x);
+    }
     
     public ArrayList<Tablero> getJugadas() {
         return jugadas;
