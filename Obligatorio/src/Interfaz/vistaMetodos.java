@@ -30,10 +30,13 @@ public class vistaMetodos {
     while (!entradaValida) {
         try {
             System.out.println(mensaje);
-            String entrada = tec.nextLine();
+            String entrada = tec.next();
 
             if (entrada.equalsIgnoreCase("x") || entrada.equalsIgnoreCase("X")) {
                 return -1; 
+            }
+            if (entrada.equalsIgnoreCase("h") || entrada.equalsIgnoreCase("H")) {
+                return -2; 
             }
 
             numero = Integer.parseInt(entrada);
@@ -90,39 +93,64 @@ public class vistaMetodos {
         }
 
     }
+     
+     public static void mostrarMovimientosArrayList(Partida Juego){
+
+         
+         if(Juego.getMovimientos().size()==0){
+             System.out.println("Aun no tienes movimientos realizados");
+         }else{
+                      System.out.println("-----------------");
+                      System.out.println("Movimientos realizados:");
+                      System.out.println("-----------------");
+             
+                        for (String movimiento : Juego.getMovimientos()) {
+                    System.out.println(movimiento +" ");
+                } 
+         }
+     }
  
-     public static int[] movimiento(){
-        
-                 Scanner tec= new Scanner(System.in);         
-                 System.out.println("--Jugada--");
+     public static int[] movimiento(Partida Juego){
+    
+    Scanner tec= new Scanner(System.in);         
+    System.out.println("--Jugada--");
 
-                 int fila=validarEntero("Ingrese fila");
-                 
-                 if(fila==-1){
-                     System.out.println("Juego terminado.");
-                    inicio();         
-                 }
-                 
-                 int columna=validarEntero("Ingrese columna");
-                 
-                 if(fila==-1){
-                     System.out.println("Juego terminado.");
-                    inicio();           
-                 }
-                 
-                 int[] retorno = new int[2];
-
-
-                  int x = fila;
-                  int y = columna;
-                 
-                 
-                 retorno[0] = x;
-                 retorno[1] = y;
-        
-               
-                 return retorno; 
+    int fila=validarEntero("Ingrese fila");
+    
+    if(fila==-1){
+        System.out.println("Juego terminado.");
+        inicio();         
     }
+    
+    if(fila==-2){
+        mostrarMovimientosArrayList(Juego);    
+        movimiento(Juego);
+    }
+    
+    int columna=validarEntero("Ingrese columna");
+    
+    if(columna==-1){
+        System.out.println("Juego terminado.");
+        inicio();           
+    }
+    
+    if(columna==-2){
+        mostrarMovimientosArrayList(Juego);    
+        movimiento(Juego);
+    }
+    
+    int[] retorno = new int[2];
+    
+    int x = fila;
+    int y = columna;
+    
+    Juego.addMovimiento(x+","+y);
+    
+    retorno[0] = x;
+    retorno[1] = y;
+
+    return retorno; 
+}
      
      public static String solicitarDatosInicio(){
                 Scanner tec= new Scanner(System.in);
@@ -196,7 +224,7 @@ public class vistaMetodos {
              
             while(!tableroPredefinido.sonIguales(predefinidoColor)){
                 
-               int[] movimientoRealizar= movimiento();
+               int[] movimientoRealizar= movimiento(Juego2);
                
              
                
@@ -254,7 +282,7 @@ public class vistaMetodos {
                 Juego.addJugadas(primera);
             while(!aOrdenar.sonIguales(azarFinalizado)){
                 
-               int[] movimientoRealizar= movimiento();
+               int[] movimientoRealizar= movimiento(Juego);
                
              aOrdenar.aplicarJugada(movimientoRealizar[0], movimientoRealizar[1]);  
              Juego.sumarMovimiento();
