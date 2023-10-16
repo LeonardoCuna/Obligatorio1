@@ -5,13 +5,13 @@
 package Interfaz;
 
 
-import static Dominio.vistaMetodos.*;
+import static Interfaz.vistaMetodos.*;
 
 
 
 /**
  *
- * @author lucas
+ * @author lucas y leo
  */
 public class Principal {
     public static void main(String[] args) {

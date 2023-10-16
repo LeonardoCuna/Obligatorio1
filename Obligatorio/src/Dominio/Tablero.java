@@ -17,6 +17,7 @@ public class Tablero implements Cloneable{
     private int nivel;
     private String[][] tablero;
     
+    
     String rojo="\033[31m";
     String azul="\033[34m"; 
     String reset="\u001B[0m";
@@ -179,11 +180,22 @@ public class Tablero implements Cloneable{
          Random rand = new Random();
          String[]movimientos = new String[nivel];
          
+         boolean repetido = false;
          for(int i=0; i<nivel; i++){
              int filaRandom = rand.nextInt(filas)+1;
              int columnaRandom = rand.nextInt(columnas)+1;
  
-             this.aplicarJugada(filaRandom, columnaRandom);
+             
+             for(int j=0; j<nivel; j++){
+                 if(movimientos[j]!=null && movimientos[j].equals(filaRandom+","+columnaRandom)){
+                     repetido=true;
+                 }
+             }
+             if(!repetido){
+                this.aplicarJugada(filaRandom, columnaRandom);
+             }else{
+                 i--;
+             }
 
              
            
@@ -327,9 +339,9 @@ public class Tablero implements Cloneable{
         if((this.tablero[fila*2][columna*4]).contains("/")){
             this.cambiarDiagonal(fila,columna);
         }
-       /*  if((this.tablero[fila][columna])=="\\"){
-            cambiarColorContraDiagonal(fila,columna);
-        }*/
+       if((this.tablero[fila*2][columna*4]).contains("\\")){
+            cambiarContraDiagonal(fila,columna);
+       }
     }
     
   
@@ -384,6 +396,49 @@ public class Tablero implements Cloneable{
         
           
     }
+     
+     
+     public void cambiarContraDiagonal(int fila, int columna){
+          int filaTab=fila*2;
+          int colTab=columna*4;
+          
+          //para arriba
+          for(int i=filaTab; i<this.tablero.length && i>=0 && colTab>=4; i-=2){
+             
+                 String comparar=this.tablero[i][colTab];
+              if(comparar.contains(rojo)){
+                   this.tablero[i][colTab]=comparar.replace(rojo, azul);
+               }
+               if(comparar.contains(azul)){
+                   this.tablero[i][colTab]=comparar.replace(azul, rojo);
+               }
+               
+               colTab-=4;
+             
+          }
+          
+          filaTab=fila*2;
+          colTab=columna*4;
+        //para abajo
+          for(int i=filaTab+2; i<this.tablero.length && i>=0 && colTab<this.tablero[0].length-4; i+=2){
+                colTab+=4; 
+                 String comparar=this.tablero[i][colTab];
+              if(comparar.contains(rojo)){
+                   this.tablero[i][colTab]=comparar.replace(rojo, azul);
+               }
+               if(comparar.contains(azul)){
+                   this.tablero[i][colTab]=comparar.replace(azul, rojo);
+               } 
+               
+               
+             
+          }
+        
+        
+          
+    }
+     
+    
     
     public void cambiarFila(int fila, int columna){
     for(int j=4; j<this.tablero[0].length; j+=4){
