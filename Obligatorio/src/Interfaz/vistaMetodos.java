@@ -1,6 +1,8 @@
 
-package Dominio;
+package Interfaz;
 
+import Dominio.Partida;
+import Dominio.Tablero;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.InputMismatchException;
@@ -158,8 +160,9 @@ public class vistaMetodos {
                int filas = dimensiones[1];
                int columnas = dimensiones[2];
             
+            Partida Juego = new Partida();
             Tablero azarFinalizado= new Tablero(nivel,filas,columnas); 
-             String[][] matriz = azarFinalizado.generarMatrizRandom(filas,columnas);
+            String[][] matriz = azarFinalizado.generarMatrizRandom(filas,columnas);
             azarFinalizado.armarTableroRandom(matriz);
             azarFinalizado.mostrarTablero();
             //arma un tablero de un solo color random
@@ -167,39 +170,45 @@ public class vistaMetodos {
             
             Tablero aOrdenar = azarFinalizado.clone();
             
-
-              String[] movimientos =aOrdenar.desordenarMatriz(nivel,filas,columnas);
+            
+            
+            String[] movimientos =aOrdenar.desordenarMatriz(nivel,filas,columnas);
          
             
             
-            int movimientosNecesitadosPorUser = 0;
             
              for(int i=0; i<movimientos.length; i++){
                  System.out.println(movimientos[i]);
              }
  
                 System.out.println("");
-                System.out.println("Tu tablero de "+nivel+ "nivel" + " con " +filas+ " filas y "+columnas+ "columnas es:");
+                System.out.println("Tu tablero de nivel: "+nivel + " con " +filas+ " filas y "+columnas+ " columnas es:");
                 aOrdenar.mostrarTablero();
-             
+                Tablero primera=aOrdenar.clone();
+                Juego.addJugadas(primera);
             while(!aOrdenar.sonIguales(azarFinalizado)){
                 
                int[] movimientoRealizar= movimiento();
                
              aOrdenar.aplicarJugada(movimientoRealizar[0], movimientoRealizar[1]);  
-             movimientosNecesitadosPorUser++;
+             Juego.sumarMovimiento();
                 System.out.println("");
                 System.out.println("Realizaste el movimiento: "+movimientoRealizar[0]+","+movimientoRealizar[1]);
                 System.out.println("Tablero actual:");
                 
                aOrdenar.mostrarTablero();
+               Tablero jugada=aOrdenar.clone();
+               Juego.addJugadas(jugada);
             }
             
             
             
             if(aOrdenar.sonIguales(azarFinalizado)){
-                ganaste(aOrdenar,movimientosNecesitadosPorUser);
-               
+                ganaste(aOrdenar,Juego.getCantMovimientos());
+                for (Tablero jugada : Juego.getJugadas()) {
+                    jugada.mostrarTablero();
+                }
+            
             }
 
                 break;
