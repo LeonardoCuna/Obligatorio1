@@ -154,12 +154,21 @@ public class Tablero implements Cloneable{
     public static String[][] generarMatrizRandom(int n, int m) {
         String[][] matriz = new String[n][m];
         Random rand = new Random();
+        int color = rand.nextInt(2);
         
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
                 int randomIndex = rand.nextInt(4);
-                String[] caracteres = {"-R", "|R", "/R", "\\R","-A", "|A", "/A", "\\A"};
-                matriz[i][j] = caracteres[randomIndex];
+                 String[] caracteresRojos = {"-R", "|R", "/R", "\\R"};
+                 String[] caracteresAzules = {"-A", "|A", "/A", "\\A"};
+               
+                if(color==1){
+                     matriz[i][j] = caracteresRojos[randomIndex];
+                }else{
+                    matriz[i][j] = caracteresAzules[randomIndex];
+                }
+                
+               
             }
         }
 
