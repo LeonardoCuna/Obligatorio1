@@ -124,12 +124,12 @@ public class vistaMetodos {
             }
             Tablero aux = new Tablero();
             int[] datos= aux.primerMatriz(input);
-
-            Tablero tabArchivo=new Tablero(3, datos[0], datos[1]);
+            //int nivelArch= aux.leerNivel(input);
+            Tablero tabArchivo=new Tablero(aux.getNivel(), datos[0], datos[1]);
             tabArchivo.armarTableroArchivo(input);
             tabArchivo.mostrarTablero();
       
-
+           
             
           
                 break;

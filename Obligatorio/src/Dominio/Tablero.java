@@ -256,9 +256,13 @@ public class Tablero implements Cloneable{
         int[] dimensiones=new int[2];
         dimensiones[0]=Integer.parseInt(posString[0]);
         dimensiones[1]=Integer.parseInt(posString[1]);
+        //System.out.println(input.nextLine());
+        
         return dimensiones;
+        
     }
     
+   
     
     public String[][] leerMatriz(Scanner input){
           
@@ -318,7 +322,7 @@ public class Tablero implements Cloneable{
             fil++;
         }
         
-       
+       this.nivel=Integer.parseInt(input.nextLine());
        
        this.tablero=tablero;
     }
@@ -497,6 +501,39 @@ public class Tablero implements Cloneable{
         }
         return true;
     }
+        
+        
+        public boolean Finalizado(){
+            boolean esRojo=true;
+            boolean esAzul=true;
+            boolean finalizado=true;
+            
+            //es azul
+            for (int i = 0; i < this.filas * 2 + 2; i++) {
+                for (int j = 0; j < this.columnas * 4 + 3; j++) {
+                    if(this.tablero[i][j].contains(rojo)){
+                        esAzul=false;
+                    }
+                }
+            }
+            
+            
+            //es rojo
+            for (int i = 0; i < this.filas * 2 + 2; i++) {
+                for (int j = 0; j < this.columnas * 4 + 3; j++) {
+                    if(this.tablero[i][j].contains(azul)){
+                        esRojo=false;
+                    }
+                }
+            }
+            
+            if(esRojo && esAzul){
+                finalizado=false;
+            }
+            
+            return finalizado;
+        }
+        
         
         @Override
    public Tablero clone() {
