@@ -16,6 +16,7 @@ public class Tablero implements Cloneable{
     private int columnas;
     private int nivel;
     private String[][] tablero;
+    private String[] solucion;
     
     
     String rojo="\033[31m";
@@ -74,6 +75,14 @@ public class Tablero implements Cloneable{
 
     public void setTablero(String[][] tablero) {
         this.tablero = tablero;
+    }
+
+    public String[] getSolucion() {
+        return solucion;
+    }
+
+    public void setSolucion(String[] solucion) {
+        this.solucion = solucion;
     }
     
   
@@ -183,6 +192,12 @@ public class Tablero implements Cloneable{
          }
          
         return resuelto;
+    }
+    
+    public void mostrarSolucion(){
+        for (String solucion1 : this.solucion) {
+            System.out.println(solucion1);
+        }
     }
    
     public static String[][] generarMatrizRandom(int n, int m) {
@@ -314,8 +329,6 @@ public class Tablero implements Cloneable{
     
     public void armarTableroArchivo(Scanner input){
         
-        
-        
         String[][] tablero=this.armarPlantilla();
         
         String[][] datos= this.leerMatriz(input);
@@ -382,7 +395,42 @@ public class Tablero implements Cloneable{
        }
     }
    
+    
+    public void mostrarMovimiento(String[][] anterior){
+        String[][] dosTableros=new String[this.altoTablero()*2][this.largoTablero()*2];
+        
+        for(int i = 0; i < this.tablero.length; i++) {
+             for (int j = 0; j < anterior[i].length; j++) {
+                if(anterior[i][j]==null){
+
+                    System.out.print(" ");
+                }else{
+
+                    System.out.print(anterior[i][j]);
+                }
+            }
+
+            // Flecha en el medio
+            System.out.print("   =>   ");
+
+            // Imprime el tablero actualizado
+            for (int j = 0; j < this.tablero[i].length; j++) {
+                if(this.tablero[i][j]==null){
+
+                    System.out.print(" ");
+                }else{
+
+                    System.out.print(this.tablero[i][j]);
+                }
+            }
+
+            System.out.println(); // Saltar a una nueva línea después de cada fila
+        } 
+    }
    
+    
+    
+    
    public boolean movimientoValido(int fila, int columna){
        boolean valido=true;
        if(fila<1 || fila>this.getFilas()){

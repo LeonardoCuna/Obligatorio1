@@ -39,6 +39,10 @@ public class vistaMetodos {
                 return -2; 
             }
             
+            if (entrada.equalsIgnoreCase("s") || entrada.equalsIgnoreCase("S")) {
+                return -4; 
+            }
+            
             if (Integer.parseInt(entrada) > 9) {
                 System.out.println("Error: El juego no permite numero mayor a 9 unidades");
                 continue; 
@@ -54,14 +58,22 @@ public class vistaMetodos {
     return numero;
 }
     public static int[] ingresarDimensionesTablero() {
-        Scanner tec = new Scanner(System.in);
+        
         
         System.out.println("");
-        int nivel = validarEntero("Ingresar nivel del tablero");
-    
-        int filas =  validarEntero("Ingresar filas del tablero");
         
-        int columnas =  validarEntero("Ingresar columnas del tablero");
+        
+        int nivel= validarEntero("Ingresar nivel del tablero");
+      
+        int filas;
+        do{
+        filas= validarEntero("Ingresar filas del tablero (MÍNIMO 3X3) ");
+        }while(filas<3);
+        
+        int columnas;
+        do{
+        columnas= validarEntero("Ingresar columnas del tablero (MÍNIMO 3X3) ");
+        }while(columnas<3);
         
         int[] dimensiones = {nivel, filas, columnas};
         return dimensiones;
@@ -137,10 +149,15 @@ public class vistaMetodos {
         System.out.println("Juego terminado.");
         inicio();           
          }
+         
+         if(fila==-4){
+        System.out.println("Solucion: ");
+        inicio();         
+          }
     
           if(columna==-2){
         mostrarMovimientosArrayList(Juego);    
-        movimiento(Juego);
+        //movimiento(Juego);
               }
     
         int[] retorno = new int[2];
@@ -215,14 +232,15 @@ public class vistaMetodos {
                 
                 }else{
                     if(tabArchivo.movimientoValido(movimientoRealizar[0], movimientoRealizar[1])){
+                          Tablero original=tabArchivo.clone();
                           tabArchivo.aplicarJugada(movimientoRealizar[0], movimientoRealizar[1]);
                           Juego2.sumarMovimiento();
                         System.out.println("");
 
                         System.out.println("Realizaste el movimiento: "+movimientoRealizar[0]+","+movimientoRealizar[1]);
-                        System.out.println("Tablero actual:");
+                        
 
-                       tabArchivo.mostrarTablero();
+                       tabArchivo.mostrarMovimiento(original.getTablero());
                        Tablero jugada=tabArchivo.clone();
                        Juego2.addJugadas(jugada);
                       }else{
@@ -292,14 +310,15 @@ public class vistaMetodos {
                    
                 }else{
                 if(tableroPredefinido.movimientoValido(movimientoRealizar[0], movimientoRealizar[1])){
-                      tableroPredefinido.aplicarJugada(movimientoRealizar[0], movimientoRealizar[1]);
+                    Tablero original=tableroPredefinido.clone();  
+                    tableroPredefinido.aplicarJugada(movimientoRealizar[0], movimientoRealizar[1]);
                       Juego3.sumarMovimiento();
                     System.out.println("");
 
                     System.out.println("Realizaste el movimiento: "+movimientoRealizar[0]+","+movimientoRealizar[1]);
-                    System.out.println("Tablero actual:");
+                    
 
-                   tableroPredefinido.mostrarTablero();
+                   tableroPredefinido.mostrarMovimiento(original.getTablero());
                    Tablero jugada=tableroPredefinido.clone();
                    Juego3.addJugadas(jugada);
                   }else{
@@ -342,11 +361,9 @@ public class vistaMetodos {
             String[] movimientos =aOrdenar.desordenarMatriz(nivel,filas,columnas);
          
             
+            aOrdenar.setSolucion(movimientos);
             
-            
-             for(int i=0; i<movimientos.length; i++){
-                 System.out.println(movimientos[i]);
-             }
+             
  
                 System.out.println("");
                 System.out.println("Tu tablero de nivel: "+nivel + " con " +filas+ " filas y "+columnas+ " columnas es:");
@@ -368,14 +385,16 @@ public class vistaMetodos {
                 }
             }else{
              if(aOrdenar.movimientoValido(movimientoRealizar[0], movimientoRealizar[1])){
-                  aOrdenar.aplicarJugada(movimientoRealizar[0], movimientoRealizar[1]);
+                 Tablero original=aOrdenar.clone();
+                 aOrdenar.aplicarJugada(movimientoRealizar[0], movimientoRealizar[1]);
                   Juego.sumarMovimiento();
+                  
                 System.out.println("");
                 
                 System.out.println("Realizaste el movimiento: "+movimientoRealizar[0]+","+movimientoRealizar[1]);
                 System.out.println("Tablero actual:");
                 
-               aOrdenar.mostrarTablero();
+               aOrdenar.mostrarMovimiento(original.getTablero());
                Tablero jugada=aOrdenar.clone();
                Juego.addJugadas(jugada);
               }else{
