@@ -326,23 +326,42 @@ public class Tablero implements Cloneable{
     
     
     
-   public void aplicarJugada(int fila, int columna){
+    public void aplicarJugada(int fila, int columna){
         
-        if((this.tablero[fila*2][columna*4]).contains("-")){
-            this.cambiarFila(fila,columna);
-        }
-        
-        if((this.tablero[fila*2][columna*4]).contains("|")){
-            this.cambiarColumna(fila,columna);
-        }
-        
-        if((this.tablero[fila*2][columna*4]).contains("/")){
-            this.cambiarDiagonal(fila,columna);
-        }
-       if((this.tablero[fila*2][columna*4]).contains("\\")){
-            cambiarContraDiagonal(fila,columna);
+       if(movimientoValido(fila, columna)){
+       
+            if((this.tablero[fila*2][columna*4]).contains("-")){
+                this.cambiarFila(fila,columna);
+            }
+
+            if((this.tablero[fila*2][columna*4]).contains("|")){
+                this.cambiarColumna(fila,columna);
+            }
+
+            if((this.tablero[fila*2][columna*4]).contains("/")){
+                this.cambiarDiagonal(fila,columna);
+            }
+           if((this.tablero[fila*2][columna*4]).contains("\\")){
+                cambiarContraDiagonal(fila,columna);
+           }
+       }else{
+           System.out.println("Error, intente otra vez");
        }
     }
+   
+   
+   public boolean movimientoValido(int fila, int columna){
+       boolean valido=true;
+       if(fila<1 || fila>this.getFilas()){
+           valido=false;
+       }
+       
+       if(columna<1 || columna>this.getColumnas()){
+           valido=false;
+       }
+       return valido;
+   }
+   
     
   
       public void cambiarColumna(int fila, int columna){
