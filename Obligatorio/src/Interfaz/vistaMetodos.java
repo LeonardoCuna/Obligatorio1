@@ -124,7 +124,7 @@ public class vistaMetodos {
     
     if(fila==-2){
         mostrarMovimientosArrayList(Juego);    
-        movimiento(Juego);
+       
     }
     
     int columna=validarEntero("Ingrese columna");
@@ -228,15 +228,22 @@ public class vistaMetodos {
                
              
                
-              tableroPredefinido.aplicarJugada(movimientoRealizar[0], movimientoRealizar[1]);  
-                Juego2.sumarMovimiento();
+            if(tableroPredefinido.movimientoValido(movimientoRealizar[0], movimientoRealizar[1])){
+                  tableroPredefinido.aplicarJugada(movimientoRealizar[0], movimientoRealizar[1]);
+                  Juego2.sumarMovimiento();
                 System.out.println("");
+                
                 System.out.println("Realizaste el movimiento: "+movimientoRealizar[0]+","+movimientoRealizar[1]);
                 System.out.println("Tablero actual:");
                 
                tableroPredefinido.mostrarTablero();
                Tablero jugada=tableroPredefinido.clone();
                Juego2.addJugadas(jugada);
+              }else{
+                System.out.println("Ingrese la jugada nuevamente");
+            }
+
+
             }
             
             if(tableroPredefinido.sonIguales(predefinidoColor)){
