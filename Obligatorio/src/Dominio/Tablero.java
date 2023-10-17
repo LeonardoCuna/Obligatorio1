@@ -352,11 +352,11 @@ public class Tablero implements Cloneable{
    
    public boolean movimientoValido(int fila, int columna){
        boolean valido=true;
-       if(fila<1 || fila>this.getFilas()){
+       if(fila<-2 || fila>this.getFilas()){
            valido=false;
        }
        
-       if(columna<1 || columna>this.getColumnas()){
+       if(columna<-2 || columna>this.getColumnas()){
            valido=false;
        }
        return valido;

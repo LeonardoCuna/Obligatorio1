@@ -33,10 +33,15 @@ public class vistaMetodos {
             String entrada = tec.next();
 
             if (entrada.equalsIgnoreCase("x") || entrada.equalsIgnoreCase("X")) {
-                return -1; 
+                return -3; 
             }
             if (entrada.equalsIgnoreCase("h") || entrada.equalsIgnoreCase("H")) {
                 return -2; 
+            }
+            
+            if (entrada.length() > 1) {
+                System.out.println("Error: El juego no permite numero mayor a 9 unidades");
+                continue; 
             }
 
             numero = Integer.parseInt(entrada);
@@ -115,39 +120,39 @@ public class vistaMetodos {
     Scanner tec= new Scanner(System.in);         
     System.out.println("--Jugada--");
 
-    int fila=validarEntero("Ingrese fila");
+        int fila=validarEntero("Ingrese fila");
     
-    if(fila==-1){
+         if(fila==-3){
         System.out.println("Juego terminado.");
         inicio();         
-    }
+          }
     
-    if(fila==-2){
+         if(fila==-2){
         mostrarMovimientosArrayList(Juego);    
        
-    }
+          }
     
-    int columna=validarEntero("Ingrese columna");
+         int columna=validarEntero("Ingrese columna");
     
-    if(columna==-1){
+         if(columna==-3){
         System.out.println("Juego terminado.");
         inicio();           
-    }
+         }
     
-    if(columna==-2){
+          if(columna==-2){
         mostrarMovimientosArrayList(Juego);    
         movimiento(Juego);
-    }
+              }
     
-    int[] retorno = new int[2];
+        int[] retorno = new int[2];
+
+          int x = fila;
+          int y = columna;
     
-    int x = fila;
-    int y = columna;
+        Juego.addMovimiento(x+","+y);
     
-    Juego.addMovimiento(x+","+y);
-    
-    retorno[0] = x;
-    retorno[1] = y;
+          retorno[0] = x;
+          retorno[1] = y;
 
     return retorno; 
 }
@@ -223,11 +228,14 @@ public class vistaMetodos {
              Partida Juego2 = new Partida();  
              
             while(!tableroPredefinido.sonIguales(predefinidoColor)){
-                
+                System.out.println("Tablero anterior:");
+
                int[] movimientoRealizar= movimiento(Juego2);
                
              
-               
+               if(movimientoRealizar[0]==-1 && -1==movimientoRealizar[1]){
+                
+            }else{
             if(tableroPredefinido.movimientoValido(movimientoRealizar[0], movimientoRealizar[1])){
                   tableroPredefinido.aplicarJugada(movimientoRealizar[0], movimientoRealizar[1]);
                   Juego2.sumarMovimiento();
@@ -245,9 +253,12 @@ public class vistaMetodos {
 
 
             }
+            }
             
             if(tableroPredefinido.sonIguales(predefinidoColor)){
                 ganaste(tableroPredefinido,Juego2.getCantMovimientos(),Juego2);
+                long tiempoTranscurrido = Principal.obtenerTiempoTranscurrido();
+                System.out.println("Tiempo transcurrido: " + tiempoTranscurrido + " segundos");
                  deseaJugar();
             
             }
@@ -291,25 +302,33 @@ public class vistaMetodos {
                 
                int[] movimientoRealizar= movimiento(Juego);
                
-             aOrdenar.aplicarJugada(movimientoRealizar[0], movimientoRealizar[1]);  
-             Juego.sumarMovimiento();
+               
+               if(movimientoRealizar[0]==-1 && -1==movimientoRealizar[1]){
+                
+            }else{
+             if(aOrdenar.movimientoValido(movimientoRealizar[0], movimientoRealizar[1])){
+                  aOrdenar.aplicarJugada(movimientoRealizar[0], movimientoRealizar[1]);
+                  Juego.sumarMovimiento();
                 System.out.println("");
+                
                 System.out.println("Realizaste el movimiento: "+movimientoRealizar[0]+","+movimientoRealizar[1]);
                 System.out.println("Tablero actual:");
                 
                aOrdenar.mostrarTablero();
                Tablero jugada=aOrdenar.clone();
                Juego.addJugadas(jugada);
+              }else{
+                System.out.println("Ingrese la jugada nuevamente");
             }
             
-            
-            
+            }
+            }
             if(aOrdenar.sonIguales(azarFinalizado)){      
                 ganaste(aOrdenar,Juego.getCantMovimientos(),Juego);
                 deseaJugar();
 
             }
-
+            
                 break;
                 
                 
