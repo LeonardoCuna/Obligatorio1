@@ -71,6 +71,10 @@ public class Tablero implements Cloneable{
         int cantidadLargo=(this.getColumnas()*4)+3;
         return cantidadLargo;
     }
+
+    public void setTablero(String[][] tablero) {
+        this.tablero = tablero;
+    }
     
   
 
@@ -150,7 +154,36 @@ public class Tablero implements Cloneable{
         
     }
     
-    
+    public boolean resuelto(){
+        boolean esRojo=true;
+        boolean esAzul=true;
+        boolean resuelto=true;
+        
+        //ver si es azul
+         for (int i = 2; i < this.tablero.length; i+=2) {
+            for (int j = 4; j < this.tablero[i].length; j+=4) {
+                if(this.tablero[i][j].contains(rojo)){
+                    esAzul=false;
+                }
+            }
+         }
+         
+         
+         //ver si es rojo
+         for (int i = 2; i < this.tablero.length; i+=2) {
+            for (int j = 4; j < this.tablero[i].length; j+=4) {
+                if(this.tablero[i][j].contains(azul)){
+                    esRojo=false;
+                }
+            }
+         }
+         
+         if(!esRojo && !esAzul){
+             resuelto=false;
+         }
+         
+        return resuelto;
+    }
    
     public static String[][] generarMatrizRandom(int n, int m) {
         String[][] matriz = new String[n][m];
@@ -352,11 +385,11 @@ public class Tablero implements Cloneable{
    
    public boolean movimientoValido(int fila, int columna){
        boolean valido=true;
-       if(fila<-2 || fila>this.getFilas()){
+       if(fila<1 || fila>this.getFilas()){
            valido=false;
        }
        
-       if(columna<-2 || columna>this.getColumnas()){
+       if(columna<1 || columna>this.getColumnas()){
            valido=false;
        }
        return valido;

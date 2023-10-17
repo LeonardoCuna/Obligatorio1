@@ -39,7 +39,7 @@ public class vistaMetodos {
                 return -2; 
             }
             
-            if (entrada.length() > 1) {
+            if (Integer.parseInt(entrada) > 9) {
                 System.out.println("Error: El juego no permite numero mayor a 9 unidades");
                 continue; 
             }
@@ -73,7 +73,6 @@ public class vistaMetodos {
                 System.out.println("");
                 x.mostrarTablero();
                 System.out.println("Lo lograste en: "+ movimientos + " Movimientos");
-                mostrarJugadas(x,  Juego);
                 System.out.println("");
                
         }
@@ -89,7 +88,7 @@ public class vistaMetodos {
                 break;
                 
             case "N": System.out.println("Gracias por jugar");
-
+            inicio();
             break;
             
             default: System.out.println("Usted ingreso una opción incorrecta");
@@ -190,12 +189,58 @@ public class vistaMetodos {
 
             Tablero tabArchivo=new Tablero(3, datos[0], datos[1]);
             tabArchivo.armarTableroArchivo(input);
+            
+            
+             System.out.println("-------------------------");
+             System.out.println("Tablero a resolver:");
             tabArchivo.mostrarTablero();
-            
-            
-            
       
+            Partida Juego2 = new Partida();  
+             
+            while(!tabArchivo.resuelto()){
+                
 
+               int[] movimientoRealizar= movimiento(Juego2);
+               
+             
+               if(movimientoRealizar[0]==-1 && -1==movimientoRealizar[1]){
+                
+                if(Juego2.getJugadas().size()>=2){
+                    System.out.println("Tablero anterior:");
+                    tabArchivo.setTablero(Juego2.volverJugada(tabArchivo));
+                    tabArchivo.mostrarTablero();
+                }else{
+                    System.out.println("No se puede volver más movimientos");
+                }
+                
+                }else{
+                    if(tabArchivo.movimientoValido(movimientoRealizar[0], movimientoRealizar[1])){
+                          tabArchivo.aplicarJugada(movimientoRealizar[0], movimientoRealizar[1]);
+                          Juego2.sumarMovimiento();
+                        System.out.println("");
+
+                        System.out.println("Realizaste el movimiento: "+movimientoRealizar[0]+","+movimientoRealizar[1]);
+                        System.out.println("Tablero actual:");
+
+                       tabArchivo.mostrarTablero();
+                       Tablero jugada=tabArchivo.clone();
+                       Juego2.addJugadas(jugada);
+                      }else{
+                        System.out.println("ATENCIÓN: NO SE REALIZA MOVIMIENTO A CAUSA DE COORDENADAS NO VÁLIDAS O ELECCION DE HISTORIAL ");
+                    }
+
+
+                }
+            }
+            
+            if(tabArchivo.resuelto()){
+                ganaste(tabArchivo,Juego2.getCantMovimientos(),Juego2);
+                long tiempoTranscurrido = Principal.obtenerTiempoTranscurrido();
+                System.out.println("Tiempo transcurrido: " + tiempoTranscurrido + " segundos");
+                 deseaJugar();
+            
+            }
+            
             
           
                 break;
@@ -225,38 +270,48 @@ public class vistaMetodos {
                 System.out.println("Tablero a resolver:");
                 tableroPredefinido.mostrarTablero();
                 
-             Partida Juego2 = new Partida();  
+             Partida Juego3 = new Partida();  
              
             while(!tableroPredefinido.sonIguales(predefinidoColor)){
                 System.out.println("Tablero anterior:");
 
-               int[] movimientoRealizar= movimiento(Juego2);
+               int[] movimientoRealizar= movimiento(Juego3);
                
              
                if(movimientoRealizar[0]==-1 && -1==movimientoRealizar[1]){
                 
-            }else{
-            if(tableroPredefinido.movimientoValido(movimientoRealizar[0], movimientoRealizar[1])){
-                  tableroPredefinido.aplicarJugada(movimientoRealizar[0], movimientoRealizar[1]);
-                  Juego2.sumarMovimiento();
-                System.out.println("");
-                
-                System.out.println("Realizaste el movimiento: "+movimientoRealizar[0]+","+movimientoRealizar[1]);
-                System.out.println("Tablero actual:");
-                
-               tableroPredefinido.mostrarTablero();
-               Tablero jugada=tableroPredefinido.clone();
-               Juego2.addJugadas(jugada);
-              }else{
-                System.out.println("Ingrese la jugada nuevamente");
-            }
+                  if(Juego3.getJugadas().size()>=2){
+                    System.out.println("Tablero anterior:");
+                    tableroPredefinido.setTablero(Juego3.volverJugada(tableroPredefinido));
+                    tableroPredefinido.mostrarTablero();
+                    
+                  }else{
+                    System.out.println("No se puede volver más movimientos");
+                  } 
+                   
+                   
+                }else{
+                if(tableroPredefinido.movimientoValido(movimientoRealizar[0], movimientoRealizar[1])){
+                      tableroPredefinido.aplicarJugada(movimientoRealizar[0], movimientoRealizar[1]);
+                      Juego3.sumarMovimiento();
+                    System.out.println("");
+
+                    System.out.println("Realizaste el movimiento: "+movimientoRealizar[0]+","+movimientoRealizar[1]);
+                    System.out.println("Tablero actual:");
+
+                   tableroPredefinido.mostrarTablero();
+                   Tablero jugada=tableroPredefinido.clone();
+                   Juego3.addJugadas(jugada);
+                  }else{
+                    System.out.println("ATENCIÓN: NO SE REALIZA MOVIMIENTO A CAUSA DE COORDENADAS NO VÁLIDAS O ELECCION DE HISTORIAL ");
+                }
 
 
-            }
-            }
+                }
+              }
             
             if(tableroPredefinido.sonIguales(predefinidoColor)){
-                ganaste(tableroPredefinido,Juego2.getCantMovimientos(),Juego2);
+                ganaste(tableroPredefinido,Juego3.getCantMovimientos(),Juego3);
                 long tiempoTranscurrido = Principal.obtenerTiempoTranscurrido();
                 System.out.println("Tiempo transcurrido: " + tiempoTranscurrido + " segundos");
                  deseaJugar();
@@ -304,7 +359,13 @@ public class vistaMetodos {
                
                
                if(movimientoRealizar[0]==-1 && -1==movimientoRealizar[1]){
-                
+                if(Juego.getJugadas().size()>=2){
+                    System.out.println("Tablero anterior:");
+                    aOrdenar.setTablero(Juego.volverJugada(aOrdenar));
+                    aOrdenar.mostrarTablero();
+                }else{
+                    System.out.println("No se puede volver más movimientos");
+                }
             }else{
              if(aOrdenar.movimientoValido(movimientoRealizar[0], movimientoRealizar[1])){
                   aOrdenar.aplicarJugada(movimientoRealizar[0], movimientoRealizar[1]);
@@ -318,14 +379,16 @@ public class vistaMetodos {
                Tablero jugada=aOrdenar.clone();
                Juego.addJugadas(jugada);
               }else{
-                System.out.println("Ingrese la jugada nuevamente");
+                System.out.println("ATENCIÓN: NO SE REALIZA MOVIMIENTO A CAUSA DE COORDENADAS NO VÁLIDAS O ELECCION DE HISTORIAL ");
             }
             
             }
             }
             if(aOrdenar.sonIguales(azarFinalizado)){      
                 ganaste(aOrdenar,Juego.getCantMovimientos(),Juego);
-                deseaJugar();
+                long tiempoTranscurrido = Principal.obtenerTiempoTranscurrido();
+                System.out.println("Tiempo transcurrido: " + tiempoTranscurrido + " segundos");
+                 deseaJugar();
 
             }
             

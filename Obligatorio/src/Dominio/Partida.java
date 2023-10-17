@@ -58,4 +58,20 @@ public class Partida {
     public void sumarMovimiento(){
         this.cantMovimientos+=1;
     }
+    
+    
+    
+    public String[][] volverJugada(Tablero actual){
+        
+       
+            // Accede al penúltimo elemento
+            Tablero unTab = this.jugadas.get(jugadas.size() - 2);
+            String[][] anterior= unTab.getTablero();
+            this.jugadas.remove(this.jugadas.size() - 1);
+            return anterior;
+            
+        
+         
+    
+    }
 }
